@@ -39,25 +39,14 @@ public class Employees {
 	/**
 	* Employees receives an employee id number as a GET
 	* Sends the name, email address back
-	*/
-
-	// note primitive return types are not allowed!
-	// just a method that will say hi Gil if used a get
-	/*@ApiMethod(name = "sayHi", httpMethod = ApiMethod.HttpMethod.GET)
-	public String sayHi() {
-		String response = "Hello Gil";
-		return response;
-	}*/ 
+	*/ 
 	
-	
-	// echo message use POST
+	// echos message sent by a POST request
+	// payload key needs to match either reference variable here or name of string variable (I think latter)
 	@ApiMethod(name = "echo")
 	public Message echo(Message message) {
 		return doEcho(message);
 	}
-	// it seems like when a post message with the message keypair is sent, it 
-	// automatically creates a Message instance with the value already set
-	// in the bean. thats fucking amazing.
 	
 	private Message doEcho(Message message) {
 		String tempEcho = message.getMessage();
@@ -66,17 +55,15 @@ public class Employees {
 		return message;
 	}
 	
-	// so this works!!
-	// testing out the same method as above but as a GET method
+	// sends a random message back based on receiving a successful GET request
 	@ApiMethod(name="echo2", httpMethod=ApiMethod.HttpMethod.GET)
 	public Message echo2(Message message) {
 		message.setMessage("This is a successful get request");
 		return message;
 	}
 	
-	//this doesnt work but think that this is the right path way
-	// testing out the same method except with ids
-	// for this one, I am testing whether the path needs to repeat the name of the method
+	// this is an example of a parametized path where the id value is received
+	// perform some business logic and send back two JSON elements
 	@ApiMethod(name="echo3",
 			httpMethod=ApiMethod.HttpMethod.GET,
 			path="echo3/{id}"
@@ -93,36 +80,17 @@ public class Employees {
 			message.setMessage("echo3 id: " + id);
 			// maybe try and send something back here
 			// better yet, display the god damn id!!
-			return message;
-		}
-		
-	}
-	//doesnt work not found
-	//testing out echo3 without putting the name on the path
-	//think it is totally wrong
-	@ApiMethod(name="echo4",
-			httpMethod=ApiMethod.HttpMethod.GET,
-			path="/{id}"
-			)
-	public Message echo4(Message message, @Named("id") String id) {
-		if (id == "one") {
-			message.setMessage("echo4 is a success one");
-			return message;
-		} else if (id == "two") {
-			message.setMessage("echo4 is a success two");
-			return message;
-		} else {
+			message.setLabel("echo3 Label");
 			return message;
 		}
 		
 	}
 	
-	
-	
+	// send back 4 JSON elements with a new type of java bean
 	@ApiMethod(name="getDetails", 
 			httpMethod=ApiMethod.HttpMethod.GET,
 			path="getDetails/{id}") 
-	private Details getDetails(Details details, @Named("id") String id) {
+	public Details getDetails(Details details, @Named("id") String id) {
 		//change the details path to getDetails
 		if (id == "one") {
 			details.setId(id);
@@ -138,12 +106,40 @@ public class Employees {
 			return details;
 			
 		} else {
+			details.setId(id);
+			details.setName("Name: three");
+			details.setEmail("three@gmail.com");
+			details.setStatus(false);
 			return details;
 		}
 		
-		
-		 
 	}
+	
+	
+	// echos two JSON elements back from a POST request payload
+	@ApiMethod(name="echo5",
+			httpMethod=ApiMethod.HttpMethod.POST,
+			path="echo5/{id}"
+			)
+	public Message echo5(Message message, @Named("id") String id) {
+		if (id == "one") { // it is fucking one!!
+			message.setMessage("echo5 is a success one");
+			return message;
+		} else if (id == "two") {
+			message.setMessage("echo5 is a success two");
+			return message;
+		} else {
+			
+			message.setMessage("Message: " + message.getMessage());
+			// maybe try and send something back here
+			// better yet, display the god damn id!!
+			message.setLabel("Label : " + message.getLabel());
+			return message;
+		}
+		
+	}
+	
+	
 	
 	
 	

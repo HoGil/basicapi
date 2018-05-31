@@ -91,9 +91,9 @@
     }
    }
   },
-  "/{id}": {
-   "get": {
-    "operationId": "EmployeesEcho4",
+  "/employees/v1/echo5/{id}": {
+   "post": {
+    "operationId": "EmployeesEcho5",
     "parameters": [
      {
       "in": "body",
@@ -119,6 +119,35 @@
      }
     }
    }
+  },
+  "/employees/v1/getDetails/{id}": {
+   "get": {
+    "operationId": "EmployeesGetDetails",
+    "parameters": [
+     {
+      "in": "body",
+      "name": "body",
+      "required": false,
+      "schema": {
+       "$ref": "#/definitions/Details"
+      }
+     },
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "A successful response",
+      "schema": {
+       "$ref": "#/definitions/Details"
+      }
+     }
+    }
+   }
   }
  },
  "securityDefinitions": {
@@ -131,8 +160,27 @@
   }
  },
  "definitions": {
+  "Details": {
+   "properties": {
+    "email": {
+     "type": "string"
+    },
+    "id": {
+     "type": "string"
+    },
+    "name": {
+     "type": "string"
+    },
+    "status": {
+     "type": "boolean"
+    }
+   }
+  },
   "Message": {
    "properties": {
+    "label": {
+     "type": "string"
+    },
     "message": {
      "type": "string"
     }
